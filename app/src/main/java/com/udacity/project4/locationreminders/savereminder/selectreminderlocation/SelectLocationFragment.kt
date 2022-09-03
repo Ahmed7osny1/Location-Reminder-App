@@ -127,8 +127,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback
         // TODO: When the user confirms on the selected location,
         binding.btnSave.setOnClickListener {
             if (isLocationSelected) {
-                _viewModel.latitude.value = ltd!!
-                _viewModel.longitude.value = lng!!
+                _viewModel.latitude.value = ltd
+                _viewModel.longitude.value = lng
                 _viewModel.reminderSelectedLocationStr.value = poiName
                 _viewModel.navigationCommand.postValue(NavigationCommand.Back)
 
