@@ -1,13 +1,14 @@
 package com.udacity.project4.locationreminders.geofence
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
-import com.udacity.project4.locationreminders.geofence.GeofenceTransitionsJobIntentService.Companion.enqueueWork
+import com.udacity.project4.authentication.AuthenticationActivity.Companion.TAG
+import com.udacity.project4.locationreminders.savereminder.ACTION_GEOFENCE_EVENT
+import com.udacity.project4.utils.errorMessage
 
 /**
  * Triggered by the Geofence.  Since we can have many Geofences at once, we pull the request
@@ -20,22 +21,19 @@ import com.udacity.project4.locationreminders.geofence.GeofenceTransitionsJobInt
  */
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
-    private val TAG = "GeofenceBroadcastReceiver"
-    @SuppressLint("LongLogTag")
     override fun onReceive(context: Context, intent: Intent) {
 
-//TODO: implement the onReceive method to receive the geofencing events at the background
+        //TODO: implement the onReceive method to receive the geofencing events at the background
+        if (intent.action == ACTION_GEOFENCE_EVENT) {
+            val geofencingEvent = GeofencingEvent.fromIntent(intent)
 
-        val geofenceEvent = GeofencingEvent.fromIntent(intent)
-        if (geofenceEvent.hasError()) {
-            Log.d(TAG, "Error on receive")
-            return
-        }
-
-        when (geofenceEvent.geofenceTransition) {
-            Geofence.GEOFENCE_TRANSITION_ENTER -> {
-                enqueueWork(context, intent)
+            if (geofencingEvent.hasError()) {
+                val errorMessage = errorMessage(context, geofencingEvent.errorCode)
+                Log.e(TAG, errorMessage)
+                return
             }
+
+            GeofenceTransitionsJobIntentService.enqueueWork(context, intent)
         }
 
     }
