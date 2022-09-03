@@ -72,7 +72,6 @@ class AuthenticationActivity : AppCompatActivity() {
             ).build(), SIGN_IN_RESULT_CODE
         )
     }
-
     companion object {
         const val TAG = "MainFragment"
         const val SIGN_IN_RESULT_CODE = 1001

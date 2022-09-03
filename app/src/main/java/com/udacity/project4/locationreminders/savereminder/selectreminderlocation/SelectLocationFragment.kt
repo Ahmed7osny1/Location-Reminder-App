@@ -44,7 +44,7 @@ private const val TAG = "SelectLocation"
 class SelectLocationFragment : BaseFragment() , OnMapReadyCallback{
 
     private lateinit var map: GoogleMap
-    private val REQUEST_LOCATION_PERMISSION = 1
+    private val REQUEST_LOCATION_PERMISSION = 1111111111
 
 
     var Poi : PointOfInterest? =null
@@ -178,7 +178,7 @@ class SelectLocationFragment : BaseFragment() , OnMapReadyCallback{
 
     private fun isPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
-            context!!,
+            requireContext(),
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     }
@@ -200,14 +200,14 @@ class SelectLocationFragment : BaseFragment() , OnMapReadyCallback{
             priority = PRIORITY_LOW_POWER
         }
         val requestBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-        val settingsClient = LocationServices.getSettingsClient(activity!!)
+        val settingsClient = LocationServices.getSettingsClient(requireActivity())
         val locationSettingsResponseTask =
             settingsClient.checkLocationSettings(requestBuilder.build())
         locationSettingsResponseTask.addOnFailureListener { exception ->
             if (exception is ResolvableApiException && resolve) {
                 try {
                     exception.startResolutionForResult(
-                        activity!!,
+                        requireActivity(),
                         REQUEST_TURN_DEVICE_LOCATION_ON
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
@@ -215,7 +215,7 @@ class SelectLocationFragment : BaseFragment() , OnMapReadyCallback{
                 }
             } else {
                 Snackbar.make(
-                    view!!,
+                    requireView(),
                     R.string.location_required_error, Snackbar.LENGTH_INDEFINITE
                 ).setAction(android.R.string.ok) {
                     checkDeviceLocationSettings()
@@ -251,20 +251,20 @@ class SelectLocationFragment : BaseFragment() , OnMapReadyCallback{
     @TargetApi(Build.VERSION_CODES.Q)
     private fun requestQPermission() {
         val hasForegroundPermission = ActivityCompat.checkSelfPermission(
-            activity!!,
+            requireActivity(),
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
         if (hasForegroundPermission) {
             val hasBackgroundPermission = ActivityCompat.checkSelfPermission(
-                activity!!,
+                requireActivity(),
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
             if (hasBackgroundPermission) {
                 checkDeviceLocationSettings()
             } else {
                 ActivityCompat.requestPermissions(
-                    activity!!,
+                    requireActivity(),
                     arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
                     REQUEST_CODE_BACKGROUND
                 )
