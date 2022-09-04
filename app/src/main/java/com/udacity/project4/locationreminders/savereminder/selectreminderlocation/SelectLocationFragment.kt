@@ -83,7 +83,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback
         }
     }
 
-    /*private fun mapPoiClick(mMap: GoogleMap) {
+    private fun mapPoiClick(mMap: GoogleMap) {
         mMap.setOnPoiClickListener { poi ->
             mMap.clear()
             val zoomLevel = 15f
@@ -99,7 +99,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback
             lng = poi.latLng.longitude
             poiName = poi.name
         }
-    }*/
+    }
 
     private fun setMapStyle(map: GoogleMap) {
         try {
@@ -258,7 +258,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16f))
         setMapLongClick(map)
         setMapStyle(map)
-        //mapPoiClick(map)
+        mapPoiClick(map)
     }
 
 
